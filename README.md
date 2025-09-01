@@ -5,6 +5,8 @@ This project was created for personal learning, but it can also be used as a han
 
 You paste an email’s text into the app, and it will predict whether the email is **“phishing” or “legitimate”** along with confidence scores.  
 
+Made as a way to better understand FASTAPI.
+
 ---
 
 ## Features
