@@ -104,12 +104,12 @@ Engine: BERT_model
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 Here’s what the app looks like in action:
 
 ### Homepage
-![Homepage Screenshot](screenshots/homepage.png)
+![Homepage Screenshot](screenshots/home.png)
 
 ### ✅ Legitimate Email Result
 ![Legitimate Email Screenshot](screenshots/legit.png)
