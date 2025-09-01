@@ -99,15 +99,23 @@ Flask_Phishing_Email_Detector/
 Phishing Probability: 92%
 Legitimate Probability: 8%
 Label: Phishing
-Engine: hf_model
+Engine: BERT_model
 ```
 
 ---
 
 ## 📸 Screenshots
 
-*Here’s what it looks like in action:*  
-*(Replace this placeholder with a real screenshot from your app)*
+Here’s what the app looks like in action:
+
+### Homepage
+![Homepage Screenshot](screenshots/homepage.png)
+
+### ✅ Legitimate Email Result
+![Legitimate Email Screenshot](screenshots/legit.png)
+
+### 🛑 Phishing Email Result
+![Phishing Email Screenshot](screenshots/phishing.png)
 
 ---
 
@@ -130,7 +138,7 @@ Engine: hf_model
     "phishing_probability": 0.92,
     "legitimate_probability": 0.08,
     "label": "phishing",
-    "engine": "hf_model"
+    "engine": "BERT_model"
   }
   ```
 

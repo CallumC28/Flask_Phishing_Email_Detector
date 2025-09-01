@@ -62,7 +62,7 @@ def _predict_with_model(text: str) -> dict:
                 "phishing_probability": phishing_p,
                 "legitimate_probability": legit_p,
                 "label": label,
-                "engine": "hf_model"
+                "engine": "BERT_model"
             }
 
     #Heuristic fallback
@@ -101,7 +101,7 @@ def health():
     engine = "heuristic"
     try:
         if _load_model_if_available():
-            engine = "hf_model"
+            engine = "BERT_model"
             model_name = getattr(getattr(_model, "config", None), "_name_or_path", None)
     except Exception:
         pass
