@@ -106,15 +106,15 @@ Engine: BERT_model
 
 ## Screenshots
 
-Here’s what the app looks like in action:
+Here’s what the app looks like in when ran:
 
-### Homepage
+**Homepage**
 ![Homepage Screenshot](screenshots/home.png)
 
-### ✅ Legitimate Email Result
+**✅ Legitimate Email Result**
 ![Legitimate Email Screenshot](screenshots/legit.png)
 
-### 🛑 Phishing Email Result
+**🛑 Phishing Email Result**
 ![Phishing Email Screenshot](screenshots/phishing.png)
 
 ---
