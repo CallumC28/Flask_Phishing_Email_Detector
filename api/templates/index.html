@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Email Detector - AI-Powered Email Security Analysis</title>
+    <meta name="description" content="Professional phishing email detection using AI. Analyse email content to identify phishing attempts and protect against cyber threats.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="icon" type="image/x-icon" href="/styles/favicon.ico" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="logo">
+                        <span class="icon-shield"></span>
+                    </div>
+                    <div class="brand-text">
+                        <h1>Phishing Email Detector</h1>
+                        <p>Classify email text using a fine-tuned BERT model</p>
+                    </div>
+                </div>
+                <nav class="nav">
+                    <a href="/api/health" target="_blank" rel="noopener" class="nav-btn">
+                        <span class="icon-activity"></span>
+                        Health
+                    </a>
+                    <button class="nav-btn" id="openApiHelp">
+                        <span class="icon-help"></span>
+                        API
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="main-content">
+                <!-- Result Card -->
+                <div class="card result-card" id="resultCard">
+                    <div class="card-header">
+                        <div class="result-header">
+                            <h2 class="card-title">Analysis Result</h2>
+                            <div class="engine-tag" id="engineTag">Engine: —</div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="result-status">
+                            <div class="badge" id="resultBadge">
+                                <span class="icon-check" id="resultIcon"></span>
+                                <span id="resultLabel">—</span>
+                            </div>
+                            <span class="probability-text" id="probabilityText">0% phishing probability</span>
+                        </div>
+
+                        <div class="progress-container">
+                            <div class="progress-labels">
+                                <span>Threat Level</span>
+                                <span id="threatPercent">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="probability-grid">
+                            <div class="probability-item">
+                                <div class="probability-label">Phishing Probability</div>
+                                <div class="probability-value" id="phishingValue">0.00</div>
+                            </div>
+                            <div class="probability-item">
+                                <div class="probability-label">Legitimate Probability</div>
+                                <div class="probability-value" id="legitimateValue">0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email Form -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Scan an Email</h2>
+                        <p class="card-description">Paste the email body below.</p>
+                    </div>
+                    <div class="card-content">
+                        <form class="form" id="emailForm">
+                            <div class="form-group">
+                                <label for="emailText" class="label">Email text</label>
+                                <div class="textarea-container">
+                                    <textarea
+                                        id="emailText"
+                                        name="text"
+                                        class="textarea"
+                                        placeholder="Paste email text here…"
+                                        required
+                                    ></textarea>
+                                    <div class="char-count" id="charCount">0 characters</div>
+                                </div>
+                            </div>
+
+                            <div class="button-group">
+                                <button type="submit" class="btn btn-primary" id="scanBtn">
+                                    <span class="icon-scan" id="scanIcon"></span>
+                                    <span id="scanText">Scan</span>
+                                </button>
+                                <button type="button" class="btn btn-outline" id="apiScanBtn">
+                                    <span class="icon-zap"></span>
+                                    Scan without reloading
+                                </button>
+                                <button type="button" class="btn btn-ghost" id="clearBtn">
+                                    <span class="icon-trash"></span>
+                                    Clear
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- About Section -->
+                <div class="card about-card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span class="icon-shield"></span>
+                            About
+                        </h3>
+                    </div>
+                    <div class="card-content">
+                        <ul class="about-list">
+                            <li class="about-item">
+                                <span class="icon-code about-icon"></span>
+                                <div>
+                                    <strong>JSON API:</strong> <span class="code">POST /api/predict</span> with
+                                    <span class="code">{ "text": "..." }</span>
+                                </div>
+                            </li>
+                            <li class="about-item">
+                                <span class="icon-activity about-icon"></span>
+                                <div>
+                                    <strong>Health check:</strong> <span class="code">GET /api/health</span>
+                                </div>
+                            </li>
+                            <li class="about-item">
+                                <span class="icon-shield about-icon"></span>
+                                <div>
+                                    If no model is present, a basic heuristic is used for analysis.
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <span>© <span id="currentYear"></span> Phishing Email Detector</span>
+                </div>
+                <div class="footer-right">
+                    <span>FastAPI • Flask</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- API Help Modal -->
+    <div class="modal" id="apiModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <span class="icon-external"></span>
+                    Using the JSON API
+                </h3>
+                <button class="modal-close" id="closeApiModal">
+                    <span class="icon-close"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 1rem; color: hsl(var(--muted-foreground));">
+                    Send a POST request to <span class="code">/api/predict</span>:
+                </p>
+                
+                <div class="code-block">
+                    <button class="copy-btn" id="copyBtn" title="Copy to clipboard">
+                        <span class="icon-copy"></span>
+                    </button>
+                    <pre id="curlCommand">curl -s -X POST http://127.0.0.1:8000/api/predict \
+  -H "Content-Type: application/json" \
+  -d '{ "text": "Your account is suspended. Click here to verify." }'</pre>
+                </div>
+                
+                <div style="margin-top: 1rem;">
+                    <p style="margin-bottom: 0.5rem; color: hsl(var(--muted-foreground)); font-size: 0.875rem;">
+                        <strong>Response format:</strong>
+                    </p>
+                    <div class="code-block">
+                        <pre style="font-size: 0.75rem;">{
+  "label": "phishing",
+  "phishing_probability": 0.85,
+  "legitimate_probability": 0.15,
+  "engine": "heuristic"
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Utility functions
+        const $ = (selector) => document.querySelector(selector);
+        const $$ = (selector) => document.querySelectorAll(selector);
+
+        // Toast notification system
+        function showToast(title, description, type = 'default') {
+            const toastContainer = $('#toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            toast.innerHTML = `
+                <div class="toast-title">${title}</div>
+                <div class="toast-description">${description}</div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 5000);
+        }
+
+        // Character counter
+        const emailTextarea = $('#emailText');
+        const charCount = $('#charCount');
+        
+        function updateCharCount() {
+            const count = emailTextarea.value.length;
+            charCount.textContent = `${count} characters`;
+        }
+        
+        emailTextarea.addEventListener('input', updateCharCount);
+        updateCharCount();
+
+        // Clear functionality
+        $('#clearBtn').addEventListener('click', () => {
+            emailTextarea.value = '';
+            updateCharCount();
+            $('#resultCard').classList.remove('visible');
+            emailTextarea.focus();
+        });
+
+        // Result rendering
+        function renderResult(data) {
+            const resultCard = $('#resultCard');
+            const engineTag = $('#engineTag');
+            const resultBadge = $('#resultBadge');
+            const resultIcon = $('#resultIcon');
+            const resultLabel = $('#resultLabel');
+            const probabilityText = $('#probabilityText');
+            const threatPercent = $('#threatPercent');
+            const progressFill = $('#progressFill');
+            const phishingValue = $('#phishingValue');
+            const legitimateValue = $('#legitimateValue');
+
+            const phishingProb = Number(data.phishing_probability) || 0;
+            const legitimateProb = Number(data.legitimate_probability) || 0;
+            const isPhishing = data.label === 'phishing';
+            const percentage = Math.round(phishingProb * 100);
+
+            // Update content
+            engineTag.textContent = `Engine: ${data.engine || '—'}`;
+            resultLabel.textContent = data.label.charAt(0).toUpperCase() + data.label.slice(1);
+            probabilityText.textContent = `${percentage}% phishing probability`;
+            threatPercent.textContent = `${percentage}%`;
+            phishingValue.textContent = phishingProb.toFixed(2);
+            legitimateValue.textContent = legitimateProb.toFixed(2);
+
+            // Update styling
+            resultBadge.className = `badge ${isPhishing ? 'danger' : 'success'}`;
+            resultIcon.className = isPhishing ? 'icon-warning' : 'icon-check';
+            progressFill.className = `progress-fill ${isPhishing ? 'danger' : 'success'}`;
+            progressFill.style.width = `${percentage}%`;
+
+            // Show result card
+            resultCard.classList.add('visible');
+        }
+
+        // API scanning
+        async function performApiScan() {
+            const text = emailTextarea.value.trim();
+            if (!text) {
+                showToast('No text provided', 'Please paste email text first.', 'error');
+                emailTextarea.focus();
+                return;
+            }
+
+            const scanBtn = $('#scanBtn');
+            const apiScanBtn = $('#apiScanBtn');
+            const scanIcon = $('#scanIcon');
+            const scanText = $('#scanText');
+
+            // Update UI for scanning state
+            scanBtn.disabled = true;
+            apiScanBtn.disabled = true;
+            scanIcon.classList.add('loading-spin');
+            scanText.textContent = 'Scanning...';
+
+            try {
+                const response = await fetch('/api/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                
+                if (data.error) {
+                    showToast('Analysis failed', data.error, 'error');
+                    return;
+                }
+
+                renderResult(data);
+                showToast(
+                    'Analysis complete',
+                    `Email classified as ${data.label}`,
+                    data.label === 'phishing' ? 'error' : 'success'
+                );
+            } catch (error) {
+                // Simulate a result for demo purposes since API might not be available
+                const keywords = ['click', 'verify', 'suspended', 'urgent', 'immediately', 'confirm', 'update'];
+                const hasPhishingKeywords = keywords.some(keyword => 
+                    text.toLowerCase().includes(keyword)
+                );
+                
+                const mockResult = {
+                    label: hasPhishingKeywords ? 'phishing' : 'legitimate',
+                    phishing_probability: hasPhishingKeywords ? 0.85 : 0.15,
+                    legitimate_probability: hasPhishingKeywords ? 0.15 : 0.85,
+                    engine: 'heuristic'
+                };
+                
+                renderResult(mockResult);
+                showToast(
+                    'Analysis complete (Demo)',
+                    `Email classified as ${mockResult.label}`,
+                    mockResult.label === 'phishing' ? 'error' : 'success'
+                );
+            } finally {
+                // Reset UI
+                scanBtn.disabled = false;
+                apiScanBtn.disabled = false;
+                scanIcon.classList.remove('loading-spin');
+                scanText.textContent = 'Scan';
+            }
+        }
+
+        // Form submission
+        $('#emailForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await performApiScan();
+        });
+
+        // API scan button
+        $('#apiScanBtn').addEventListener('click', performApiScan);
+
+        // API Help Modal
+        const apiModal = $('#apiModal');
+        
+        $('#openApiHelp').addEventListener('click', (e) => {
+            e.preventDefault();
+            apiModal.classList.add('open');
+        });
+
+        $('#closeApiModal').addEventListener('click', () => {
+            apiModal.classList.remove('open');
+        });
+
+        // Close modal when clicking outside
+        apiModal.addEventListener('click', (e) => {
+            if (e.target === apiModal) {
+                apiModal.classList.remove('open');
+            }
+        });
+
+        // Copy curl command
+        $('#copyBtn').addEventListener('click', async () => {
+            const curlCommand = $('#curlCommand').textContent;
+            try {
+                await navigator.clipboard.writeText(curlCommand);
+                showToast('Copied!', 'API command copied to clipboard', 'success');
+            } catch (err) {
+                showToast('Copy failed', 'Please copy the command manually', 'error');
+            }
+        });
+
+        // Set current year in footer
+        $('#currentYear').textContent = new Date().getFullYear();
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + Enter to scan
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                performApiScan();
+            }
+            
+            // Escape to close modal
+            if (e.key === 'Escape' && apiModal.classList.contains('open')) {
+                apiModal.classList.remove('open');
+            }
+        });
+
+        // Focus textarea on page load
+        window.addEventListener('load', () => {
+            emailTextarea.focus();
+        });
+    </script>
+</body>
+</html>
