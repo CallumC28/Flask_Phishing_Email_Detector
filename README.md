@@ -9,7 +9,7 @@ It provides both a clean web interface (Flask UI) and JSON endpoints (FastAPI) s
 - **Simple web UI** for pasting/scanning email text.
 - **FastAPI JSON API** for programmatic access.
 - **Heuristic fallback** when no trained model is available.
-- **Deployable to Vercel** (serverless) or run locally with Uvicorn.
+- **Locally run** with Uvicorn.
 - **Trained model support** — just drop your Hugging Face `saved_model/` folder in place.
 
 ---
@@ -20,7 +20,7 @@ phishing-detector/
 │
 ├── api/ # Server code (FastAPI + Flask)
 │ ├── index.py # Entrypoint with API + UI routes
-│ ├── saved_model/ # Fine-tuned model (Hugging Face format)
+│ ├── saved_model/ # Fine-tuned model (Hugging face) made from another repo of mine (Phishing-Email-Detector-In-Progress)
 │ │ ├── config.json
 │ │ ├── model.safetensors 
 │ │ ├── tokenizer.json
@@ -29,44 +29,8 @@ phishing-detector/
 │ │ └── index.html # Web UI template
 │ └── styles/
 │ └── style.css # UI styling
-│
-├── requirements.txt # Python dependencies
-├── vercel.json # Vercel routing config
+│ └── favicon.ico # letter logo
 └── README.md # This file
 ```
 
 ---
-
-## API Usage
-
-**Health**
-GET /api/health
-
-**Response**
-```bash
-{
-  "ok": true,
-  "model_present": true,
-  "engine": "hf_model"
-}
-```
-
----
-
-**Predict**
-```bash
-POST /api/predict
-Content-Type: application/json
-
-{ "text": "The copy and pasted email." }
-```
-
-**Response**
-```bash
-{
-  "phishing_probability": 0.92,
-  "legitimate_probability": 0.08,
-  "label": "phishing",
-  "engine": "hf_model"
-}
-```
