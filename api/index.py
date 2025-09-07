@@ -12,7 +12,7 @@ from flask import Flask, render_template, request as flask_request
 
 # Config & paths
 HERE = Path(__file__).parent
-DEFAULT_MODEL_DIR = HERE / "saved_model"  # place your fine-tuned model here
+DEFAULT_MODEL_DIR = HERE / "saved_model"
 MODEL_DIR = Path(os.getenv("MODEL_DIR", str(DEFAULT_MODEL_DIR)))
 
 # Lazy model cache (warm in memory on first call)
